@@ -27,6 +27,13 @@ namespace LargeDataSetMvc.Controllers
             return View();
         }
 
+        public IActionResult Employees()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
         public IActionResult Error()
         {
             return View();
