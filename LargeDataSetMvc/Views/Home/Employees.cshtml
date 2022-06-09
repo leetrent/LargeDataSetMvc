@@ -1,30 +1,54 @@
-﻿@{
-    ViewData["Title"] = "Employees";
-}
+﻿@(Html.Kendo().Grid<LargeDataSetMvc.Model.CurrentEmployee>()
+    .Name("Grid")
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.EmpNo);
+        columns.Bound(p => p.FirstName);
+        columns.Bound(p => p.LastName);
+        columns.Bound(p => p.Title);
+    })
+    .Sortable()
+    .Pageable(p=>p.Numeric(false).PreviousNext(false))
+    .HtmlAttributes(new { style = "height:550px;" })
+    .Scrollable(sc => sc.Endless(true))
+    .DataSource(dataSource => dataSource
+        .Custom()
+        .Batch(true)
+        .PageSize(20)
+        .Schema(schema =>
+        {
+            schema.Model(m => m.Id(p => p.EmpNo));
+            schema.Data(@<text>function data(response) {
+                return response.d ? response.d.results : response;
+            }</text>);
+        })
+        .ServerSorting(true)
+        .ServerPaging(true)
+        .Type("odata")
+        .Transport(transport =>
+        {
+            transport.Read(read => read.Url("https://localhost:61307/Employees/Employees_Read").DataType("jsonp"));
+            transport.ParameterMap("parameterMap");
+        })
+    )
+)
 
 
-<div class="row">
-    <div class="col-12">
-        @(Html.Kendo().Grid <LargeDataSetMvc.Models.OrderViewModel>()
-                            .Name("grid")
-                            .Columns(columns =>
-                            {
-                                columns.Bound(p => p.OrderID).Filterable(false);
-                                columns.Bound(p => p.Freight);
-                                columns.Bound(p => p.OrderDate).Format("{0:MM/dd/yyyy}");
-                                columns.Bound(p => p.ShipName);
-                                columns.Bound(p => p.ShipCity);
-                            })
-                            .Pageable()
-                            .Sortable()
-                            .Scrollable()
-                            .Filterable()
-                            .HtmlAttributes(new { style = "height:550px;" })
-                            .DataSource(dataSource => dataSource
-                                .Ajax()
-                                .PageSize(20)
-                                .Read(read => read.Action("Employees_Read", "Employees"))
-                             )
-        )
-    </div>
-</div>
+<script type="text/javascript">
+        function parameterMap (options, operation) {
+            if (operation) {
+                console.log("operation", operation);
+            }
+            if (options) {
+                console.log("options", options);
+            }
+            if (options.models) {
+                console.log("options.models", options.models);
+            }
+            if (operation !== "read" && options.models) {
+                return { models: kendo.stringify(options.models) };
+            }
+
+            return kendo.data.transports["odata"].parameterMap(options, operation);
+        }
+    </script>

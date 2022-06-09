@@ -16,33 +16,35 @@ namespace LargeDataSetMvc.Controllers
             _dbContext = dbc;
         }
 
+        //public ActionResult Employees_Read([DataSourceRequest] DataSourceRequest request)
+        //{
+        //    string logSnippet = "[EmployeeController][Employees_Read] =>";
+
+        //    IList<CurrentEmployee> currentEmployees = _dbContext.CurrentEmployees.ToList();
+        //    Console.WriteLine($"{logSnippet} (currentEmployees.Count): {currentEmployees.Count}");
+
+        //    var dsResult = currentEmployees.ToDataSourceResult(request);
+        //    return Json(dsResult);
+        //}
+
         public ActionResult Employees_Read([DataSourceRequest] DataSourceRequest request)
         {
             string logSnippet = "[EmployeeController][Employees_Read] =>";
+            Console.WriteLine();
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine($"{logSnippet} (request.Take)....: '{request.Take}'");
+            Console.WriteLine($"{logSnippet} (request.Skip)....: '{request.Skip}'");
+            Console.WriteLine($"{logSnippet} (request.Page)....: '{request.Page}'");
+            Console.WriteLine($"{logSnippet} (request.PageSize): '{request.PageSize}'");
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine();
 
-            Console.WriteLine($"{logSnippet} (_dbContext == null): {_dbContext == null}");
-
-            this.test();
-
-            var result = Enumerable.Range(0, 50).Select(i => new OrderViewModel
-            {
-                OrderID = i,
-                Freight = i * 10,
-                OrderDate = new DateTime(2016, 9, 15).AddDays(i % 7),
-                ShipName = "ShipName " + i,
-                ShipCity = "ShipCity " + i
-            });
-
-            var dsResult = result.ToDataSourceResult(request);
-            return Json(dsResult);
-        }
-
-        private void test()
-        {
-            string logSnippet = "[EmployeeController][test] =>";
 
             IList<CurrentEmployee> currentEmployees = _dbContext.CurrentEmployees.ToList();
             Console.WriteLine($"{logSnippet} (currentEmployees.Count): {currentEmployees.Count}");
+
+            var dsResult = currentEmployees.ToDataSourceResult(request);
+            return Json(dsResult);
         }
     }
 }

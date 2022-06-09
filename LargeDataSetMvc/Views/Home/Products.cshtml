@@ -22,8 +22,8 @@
         {
             schema.Model(m => m.Id(p => p.ProductID));
             schema.Data(@<text>function data(response) {
-                return response.d ? response.d.results : response;
-            }</text>);
+                    return response.d ? response.d.results : response;
+                }</text>);
         })
         .ServerSorting(true)
         .ServerPaging(true)
@@ -54,6 +54,15 @@
 
 <script type="text/javascript">
         function parameterMap (options, operation) {
+            if (operation) {
+                console.log("operation", operation);
+            }
+            if (options) {
+                console.log("options", options);
+            }
+            if (options.models) {
+                console.log("options.models", options.models);
+            }
             if (operation !== "read" && options.models) {
                 return { models: kendo.stringify(options.models) };
             }
