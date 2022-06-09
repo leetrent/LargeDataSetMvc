@@ -1,4 +1,7 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using LargeDataSetMvc.Model;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
@@ -7,6 +10,9 @@ builder.Services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());
 // Add Kendo UI services to the services container"
 builder.Services.AddKendo();
+
+builder.Services.AddDbContext<EmployeeContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("SchoolContext"), ServerVersion.Parse("5.7.37-mysql")));
 
 var app = builder.Build();
 
