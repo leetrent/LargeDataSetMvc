@@ -3,6 +3,7 @@ using Kendo.Mvc.Extensions;
 using LargeDataSetMvc.Model;
 using LargeDataSetMvc.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace LargeDataSetMvc.Controllers
 {
@@ -21,6 +22,8 @@ namespace LargeDataSetMvc.Controllers
 
             Console.WriteLine($"{logSnippet} (_dbContext == null): {_dbContext == null}");
 
+            this.test();
+
             var result = Enumerable.Range(0, 50).Select(i => new OrderViewModel
             {
                 OrderID = i,
@@ -32,6 +35,14 @@ namespace LargeDataSetMvc.Controllers
 
             var dsResult = result.ToDataSourceResult(request);
             return Json(dsResult);
+        }
+
+        private void test()
+        {
+            string logSnippet = "[EmployeeController][test] =>";
+
+            IList<CurrentEmployee> currentEmployees = _dbContext.CurrentEmployees.ToList();
+            Console.WriteLine($"{logSnippet} (currentEmployees.Count): {currentEmployees.Count}");
         }
     }
 }
