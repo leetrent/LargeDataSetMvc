@@ -27,7 +27,7 @@
         .Type("odata")
         .Transport(transport =>
         {
-            transport.Read(read => read.Url("https://localhost:61307/Employees/Employees_Read").DataType("jsonp"));
+            transport.Read(read => read.Action("Employees_Read", "Employees").DataType("jsonp"));
             transport.ParameterMap("parameterMap");
         })
     )
