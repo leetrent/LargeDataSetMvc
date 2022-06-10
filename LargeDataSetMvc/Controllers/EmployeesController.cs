@@ -4,6 +4,8 @@ using LargeDataSetMvc.Model;
 using LargeDataSetMvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using LargeDataSetMvc.Utils;
 
 namespace LargeDataSetMvc.Controllers
 {
@@ -18,31 +20,26 @@ namespace LargeDataSetMvc.Controllers
 
         public ActionResult Employees_Read([DataSourceRequest] DataSourceRequest request)
         {
-            string logSnippet = "[EmployeeController][Employees_Read] =>";
 
-            Console.WriteLine($"{logSnippet} (_dbContext == null): {_dbContext == null}");
-
-            this.test();
-
-            var result = Enumerable.Range(0, 50).Select(i => new OrderViewModel
-            {
-                OrderID = i,
-                Freight = i * 10,
-                OrderDate = new DateTime(2016, 9, 15).AddDays(i % 7),
-                ShipName = "ShipName " + i,
-                ShipCity = "ShipCity " + i
-            });
-
-            var dsResult = result.ToDataSourceResult(request);
+            IList<CurrentEmployee> currentEmployees = _dbContext.CurrentEmployees.ToList();
+            var dsResult = currentEmployees.ToDataSourceResult(request);
             return Json(dsResult);
         }
 
-        private void test()
+        // GET: Students
+        [HttpGet]
+        public async Task<IActionResult> Index(int? page)
         {
-            string logSnippet = "[EmployeeController][test] =>";
+            string logSnippet = "[EmployeesController][Index] =>";
+            Console.WriteLine("");
+            Console.WriteLine($"{logSnippet} (page.HasValue): '{page.HasValue}'");
+            Console.WriteLine($"{logSnippet} (page)........: '{page}'");
+            Console.WriteLine("");
 
-            IList<CurrentEmployee> currentEmployees = _dbContext.CurrentEmployees.ToList();
-            Console.WriteLine($"{logSnippet} (currentEmployees.Count): {currentEmployees.Count}");
+            var currentEmployees = from s in _dbContext.CurrentEmployees select s;
+
+            int pageSize = 10;
+            return View(await PaginatedList<CurrentEmployee>.CreateAsync(currentEmployees.AsNoTracking(), page ?? 1, pageSize));
         }
     }
 }
