@@ -4,6 +4,7 @@ using LargeDataSetMvc.Model;
 using LargeDataSetMvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace LargeDataSetMvc.Controllers
 {
@@ -22,6 +23,16 @@ namespace LargeDataSetMvc.Controllers
             IList<CurrentEmployee> currentEmployees = _dbContext.CurrentEmployees.ToList();
             var dsResult = currentEmployees.ToDataSourceResult(request);
             return Json(dsResult);
+        }
+
+        // GET: Students
+        [HttpGet]
+        public async Task<IActionResult> Index(int? page)
+        {
+            var currentEmployees = from s in _dbContext.CurrentEmployees select s;
+
+            int pageSize = 50;
+            return View(await PaginatedList<CurrentEmployee>.CreateAsync(currentEmployees.AsNoTracking(), page ?? 1, pageSize));
         }
     }
 }
