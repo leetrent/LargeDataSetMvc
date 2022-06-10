@@ -1,0 +1,46 @@
+﻿@model LargeDataSetMvc.Models.PagerViewModel
+
+
+@{
+    ViewData["Title"] = "Current Employees";
+}
+
+<h2 class="text-center">Current Employees</h2>
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+
+<div class="row">
+    <div class="col-12">
+        @(Html.Kendo().Grid <LargeDataSetMvc.Model.CurrentEmployee>()
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.EmpNo).Filterable(false);
+                columns.Bound(p => p.FirstName);
+                columns.Bound(p => p.LastName);
+                columns.Bound(p => p.Title);
+            })
+            .Sortable()
+            .Pageable(pager => pager
+                .Input(Model.Input)
+                .Numeric(Model.Numeric)
+                .Info(Model.Info)
+                .PreviousNext(Model.PreviousNext)
+                .Refresh(Model.Refresh)
+                .PageSizes(Model.PageSizes)
+            )
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(20)
+                .Read(read => read.Action("Employees_Read", "Employees"))
+           )
+        )
+    </div>
+</div>
+
+
+
+

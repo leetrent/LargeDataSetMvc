@@ -31,8 +31,12 @@ namespace LargeDataSetMvc.Controllers
 
         public ActionResult Employees_Read([DataSourceRequest] DataSourceRequest request)
         {
+            //string title = "Senior Engineer";
 
             IList<CurrentEmployee> currentEmployees = _dbContext.CurrentEmployees.ToList();
+
+            //IList<CurrentEmployee> currentEmployees = _dbContext.CurrentEmployees.Where(e => e.Title == title).ToList();
+
             var dsResult = currentEmployees.ToDataSourceResult(request);
             return Json(dsResult);
         }
