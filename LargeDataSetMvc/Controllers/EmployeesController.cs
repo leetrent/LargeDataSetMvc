@@ -38,7 +38,7 @@ namespace LargeDataSetMvc.Controllers
 
             var currentEmployees = from s in _dbContext.CurrentEmployees select s;
 
-            int pageSize = 10;
+            int pageSize = 5;
             return View(await PaginatedList<CurrentEmployee>.CreateAsync(currentEmployees.AsNoTracking(), page ?? 1, pageSize));
         }
     }
