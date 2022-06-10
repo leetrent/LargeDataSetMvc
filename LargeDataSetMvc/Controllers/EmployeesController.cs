@@ -18,6 +18,17 @@ namespace LargeDataSetMvc.Controllers
             _dbContext = dbc;
         }
 
+        public ActionResult Paging()
+        {
+            return View(new PagerViewModel());
+        }
+
+        [HttpPost]
+        public ActionResult Paging(PagerViewModel pager)
+        {
+            return View(pager);
+        }
+
         public ActionResult Employees_Read([DataSourceRequest] DataSourceRequest request)
         {
 
@@ -27,19 +38,19 @@ namespace LargeDataSetMvc.Controllers
         }
 
         // GET: Students
-        [HttpGet]
-        public async Task<IActionResult> Index(int? page)
-        {
-            string logSnippet = "[EmployeesController][Index] =>";
-            Console.WriteLine("");
-            Console.WriteLine($"{logSnippet} (page.HasValue): '{page.HasValue}'");
-            Console.WriteLine($"{logSnippet} (page)........: '{page}'");
-            Console.WriteLine("");
+        //[HttpGet]
+        //public async Task<IActionResult> Index(int? page)
+        //{
+        //    string logSnippet = "[EmployeesController][Index] =>";
+        //    Console.WriteLine("");
+        //    Console.WriteLine($"{logSnippet} (page.HasValue): '{page.HasValue}'");
+        //    Console.WriteLine($"{logSnippet} (page)........: '{page}'");
+        //    Console.WriteLine("");
 
-            var currentEmployees = from s in _dbContext.CurrentEmployees select s;
+        //    var currentEmployees = from s in _dbContext.CurrentEmployees select s;
 
-            int pageSize = 10;
-            return View(await PaginatedList<CurrentEmployee>.CreateAsync(currentEmployees.AsNoTracking(), page ?? 1, pageSize));
-        }
+        //    int pageSize = 10;
+        //    return View(await PaginatedList<CurrentEmployee>.CreateAsync(currentEmployees.AsNoTracking(), page ?? 1, pageSize));
+        //}
     }
 }

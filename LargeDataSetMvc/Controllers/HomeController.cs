@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LargeDataSetMvc.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,17 @@ namespace LargeDataSetMvc.Controllers
             ViewData["Message"] = "Your application description page.";
 
             return View();
+        }
+
+        public ActionResult Paging()
+        {
+            return View(new PagerViewModel());
+        }
+
+        [HttpPost]
+        public ActionResult Paging(PagerViewModel pager)
+        {
+            return View(pager);
         }
 
         public IActionResult Error()
