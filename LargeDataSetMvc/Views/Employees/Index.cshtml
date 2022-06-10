@@ -37,3 +37,14 @@
 </table>
 
 
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index" class="btn btn-default btn-lg @prevDisabled" asp-route-page="@(Model.PageIndex - 1)">Previous</a>
+<a asp-action="Index" class="btn btn-default btn-lg @nextDisabled" asp-route-page="@(Model.PageIndex + 1)">Next</a>
+
+
+
+
