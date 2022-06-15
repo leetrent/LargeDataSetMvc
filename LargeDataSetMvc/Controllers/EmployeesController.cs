@@ -41,20 +41,5 @@ namespace LargeDataSetMvc.Controllers
             return Json(dsResult);
         }
 
-        // GET: Students
-        //[HttpGet]
-        //public async Task<IActionResult> Index(int? page)
-        //{
-        //    string logSnippet = "[EmployeesController][Index] =>";
-        //    Console.WriteLine("");
-        //    Console.WriteLine($"{logSnippet} (page.HasValue): '{page.HasValue}'");
-        //    Console.WriteLine($"{logSnippet} (page)........: '{page}'");
-        //    Console.WriteLine("");
-
-        //    var currentEmployees = from s in _dbContext.CurrentEmployees select s;
-
-        //    int pageSize = 10;
-        //    return View(await PaginatedList<CurrentEmployee>.CreateAsync(currentEmployees.AsNoTracking(), page ?? 1, pageSize));
-        //}
     }
 }
